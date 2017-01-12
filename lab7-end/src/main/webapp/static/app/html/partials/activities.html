@@ -1,0 +1,20 @@
+<h1>Activities</h1>
+<div ng-controller="activitiesCtrl">
+	<form>
+		<label>name:</label><input type="text" ng-model="activity.name"><br />
+		<button ng-disabled="!activity.name" ng-click="sacuvaj()">sacuvaj</button>
+	</form>
+	<hr />
+	<form>
+		<label>name:</label><input type="text" ng-model="filterActivity.name"><br />
+		<button ng-click="filtriraj()">filtriraj</button>
+	</form>
+	<hr />
+	<ul>
+		<li ng-repeat="activity in activities">
+			{{activity.id}} {{activity.name}} 
+			<button ng-click="brisanje(activity.id)">delete</button>
+			<button ng-click="postaviAktivnost(activity)">edit</button>
+		</li>
+	</ul>
+</div>

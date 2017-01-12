@@ -1,0 +1,25 @@
+<h1>Users</h1>
+<div ng-controller="usersCtrl">
+	<form>
+		<label>e-mail: </label><input type="text" ng-model="user.email"><br />
+		<label>first name: </label><input type="text" ng-model="user.firstname"><br />
+		<label>last name: </label><input type="text" ng-model="user.lastname"><br />		
+		<label>password: </label><input type="password" ng-model="user.password"><br />
+		<label>confirm password: </label><input type="password" ng-model="user.passwordConfirm"><br />
+		<button ng-click="sacuvaj()">sacuvaj</button>
+		<button ng-click="reset()">reset</button>
+	</form>
+	<hr />
+	<form>
+		<label>last name: </label><input type="text" ng-model="filterUser.lastname"><br />		
+		<button ng-click="filtriraj()">filtriraj</button>
+	</form>
+	<hr />
+	<ul>
+		<li ng-repeat="user in users">
+			{{user.id}} {{user.firstname}} {{user.lastname}} {{user.email}}
+			<button ng-click="brisanje(user.id)">delete</button>
+			<button ng-click="postaviUser(user)">edit</button>
+		</li>
+	</ul>
+</div>
