@@ -1,0 +1,29 @@
+<h1>Activities</h1>
+<div ng-controller="activitiesCtrl">
+	<form>
+		<label for="name">name:</label><input id="name" class="form-control" type="text" ng-model="activity.name"><br />
+		<button class="btn btn-primary" ng-click="sacuvaj()">sacuvaj</button>
+	</form>
+	<hr />
+	<form>
+		<label for="filter">name:</label><input class="form-control" id="filter" type="text" ng-model="filterActivity.name"><br />
+		<button class="btn btn-primary" ng-click="filtriraj()">filtriraj</button>
+	</form>
+	<hr />
+	<table class="table table-bordered table-striped">
+		<tr>
+			<th>id</th>
+			<th>name</th>
+			<th>action</th>
+		</tr>
+		<tr ng-repeat="activity in activities">
+			<td>{{activity.id}}</td>
+			<td>{{activity.name}}</td>
+			<td>			
+				<button class="btn btn-danger" ng-click="brisanje(activity.id)">delete</button>
+				<button class="btn btn-success" ng-click="postaviAktivnost(activity)">edit</button>
+				<button class="btn btn-success" ng-click="postaviAktivnostNaStranici(activity)">editInNewPage</button>
+			</td>
+		</tr>
+	</table>
+</div>
