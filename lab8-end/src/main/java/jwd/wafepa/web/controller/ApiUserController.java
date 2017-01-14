@@ -36,8 +36,16 @@ public class ApiUserController {
 	@RequestMapping(method = RequestMethod.GET)
 	ResponseEntity<List<UserDTO>> getUser(
 			@RequestParam(defaultValue = "0") int page,
-			@RequestParam() String name) {
-		Page<User> usersPage = userService.findAll(page);
+			@RequestParam(defaultValue = "") String lastname) {
+		
+		
+		Page<User> usersPage;
+		
+		if(lastname == null) {
+			usersPage = userService.findAll(page);
+		} else {
+			usersPage = userService.findByLastName(lastname, page);
+		}
 
 		if (page > usersPage.getTotalPages()) {
 			return new ResponseEntity<List<UserDTO>>(HttpStatus.NOT_FOUND);

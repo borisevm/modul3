@@ -1,5 +1,5 @@
-<h1>Activities</h1>
 <div ng-controller="activitiesCtrl">
+<h1>Activities <span class="badge">{{activities.length}}</span></h1>
 	<form>
 		<label for="name">name:</label><input id="name" class="form-control" type="text" ng-model="activity.name"><br />
 		<button class="btn btn-primary" ng-click="sacuvaj()">sacuvaj</button>

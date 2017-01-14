@@ -36,10 +36,11 @@ wafepaApp.controller('activityCtrl',
         });
     }
 
-  }
+  }  
+  
 });
 
-wafepaApp.controller('activitiesCtrl',function ($scope, $http) {
+wafepaApp.controller('activitiesCtrl',function ($scope, $http, $location) {
     //preuzimanje svih aktivnosti
     var ucitajSve = function () {
        //config objekat pomogcu kog saljemo paramtri pretrage
@@ -53,14 +54,14 @@ wafepaApp.controller('activitiesCtrl',function ($scope, $http) {
          $scope.activities = resp.data;
          $scope.activity={}
        });
-    }
+    }       
 
    ucitajSve();
    
    $scope.filtriraj = ucitajSve;
 
    $scope.brisanje = function (id) {
-    $http.delete('/api/activities/'+id).then(ucitajSve) 
+	   $http.delete('/api/activities/'+id).then(ucitajSve) 
    }
 
    $scope.sacuvaj = function () {
@@ -80,6 +81,79 @@ wafepaApp.controller('activitiesCtrl',function ($scope, $http) {
     //aktivnost u listi
     $scope.activity = angular.copy(a);
    }
+   
+   $scope.postaviAktivnostNaStranici = function(a) {
+	   $scope.activity = angular.copy(a);
+	   $location.path('/activity/'+$scope.activity.id);
+   }
+});
+
+wafepaApp.controller('usersCtrl', function($scope, $http, $location) {
+		var ucitajSve = function() {
+			
+			var config = {};
+			if($scope.filterUser && $scope.filterUser.lastname) {
+				config = {'params': {'lastname':$scope.filterUser.lastname}};
+			}
+			$http.get('/api/users', config).then(function(resp){
+				$scope.users = resp.data;
+				$scope.user = {}
+			});
+		}
+		ucitajSve();
+		
+		$scope.filtriraj = ucitajSve; 
+		
+		$scope.brisanje = function(id) {
+			$http.delete('/api/users/'+id).then(ucitajSve);
+		}
+		
+		$scope.sacuvaj = function() {
+			if(!$scope.user.id) {
+				$http.post('/api/users/', $scope.user).then(ucitajSve);
+			} else {
+				$http.put('/api/users/'+$scope.user.id, $scope.user).then(ucitajSve);
+			}
+		}
+		
+		$scope.postaviUser = function(a) {
+			$scope.user = angular.copy(a);
+		}
+		
+		$scope.postaviUserNaStranici = function(a) {
+			$scope.user = angular.copy(a);
+			$location.path('/user/'+$scope.user.id);
+		}
+		
+		$scope.emptyForm = {};
+		$scope.reset = function() {
+			$scope.user = angular.copy($scope.emptyForm);
+		}
+});
+
+wafepaApp.controller('userCtrl', function($scope, $http, $location, $routeParams) {
+	
+		$http.get('/api/users/'+$routeParams.id).then(function(resp){
+			$scope.user = resp.data;			
+		});
+		
+	
+	$scope.sacuvaj = function() {
+		if(!$scope.user.id) {
+			$http.post('/api/users/', $scope.user).then(function() {
+				$location.path('/users');
+			})
+		} else {
+			$http.put('/api/users/'+$scope.user.id, $scope.user).then(function() {
+				$location.path('/users');
+			});
+		}
+	}
+	
+	$scope.emptyForm = {};
+	$scope.reset = function() {
+		$scope.user = angular.copy($scope.emptyForm);
+	}
 });
 
 //od Angular 1.6 default hash prefiks vise nije '' nego je '!'
@@ -98,6 +172,14 @@ wafepaApp.config(function($routeProvider) {
         //http://localhost:8080/static/app/html/index.html/#!/activity
         .when('/activity/:id', {
              templateUrl : '/static/app/html/partials/activity.html'
+        })
+        //http://localhost:8080/static/app/html/index.html/#!/users
+        .when('/users', {
+        	templateUrl : '/static/app/html/partials/users.html'
+        })
+        //http://localhost:8080/static/app/html/index.html/#!/user
+        .when('/user/:id', {
+        	templateUrl : '/static/app/html/partials/user.html'
         })
         //sve ostalo radi redirekciju na
         //http://localhost:8080/static/app/html/index.html/#!/

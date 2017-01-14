@@ -16,4 +16,6 @@ public interface UserService {
 	//varijanta brisanja koja NE vraća entitet
 	void delete(Long id); 
 	
+	Page<User> findByLastName(String lastName, int page);
+	
 }

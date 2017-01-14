@@ -36,4 +36,9 @@ public class JpaUserService implements UserService {
 		userRepository.delete(id);
 	}
 
+	@Override
+	public Page<User> findByLastName(String lastName, int page) {		
+		return userRepository.findByLastNameLike("%"+lastName+"%", new PageRequest(page, 10));
+	}
+
 }
