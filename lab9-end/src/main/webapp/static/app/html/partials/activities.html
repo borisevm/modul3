@@ -1,0 +1,36 @@
+<h1>Activities</h1>
+<div ng-controller="activitiesCtrl">
+	<form>
+		<label for="name">name:</label><input id="name" class="form-control" type="text" ng-model="activity.name"><br />
+		<button class="btn btn-primary" ng-click="sacuvaj()">sacuvaj</button>
+	</form>
+	<hr />
+	<form>
+		<label for="filter">name:</label><input class="form-control" id="filter" type="text" ng-model="filterActivity.name"><br />
+		<button class="btn btn-primary" ng-click="filtriraj()">filtriraj</button>
+	</form>
+	<hr />
+	<div class="btn-group pull-right">
+		<button ng-disabled="brojacStranice<=0" ng-click="changePage(-1)" class="btn btn-primary">prev</button>
+		<button ng-disabled="brojacStranice>=totalPages-1" ng-click="changePage(1)" class="btn btn-primary">next</button>
+	</div>
+	<table class="table table-bordered table-striped">
+		<tr>
+			<th>id</th>
+			<th>name</th>
+			<th>user</th>
+			<th>action</th>
+		</tr>
+		<tr ng-repeat="activity in activities">
+			<td>{{activity.id}}</td>
+			<td>{{activity.name}}</td>
+			<td>{{activity.user.firstname}} {{activity.user.lastname}}<br />
+				{{getAddressAsString(activity.user)}}</span></td>
+			<td>			
+				<button class="btn btn-danger" ng-click="brisanje(activity.id)">delete</button>
+				<button class="btn btn-success" ng-click="postaviAktivnost(activity)">edit</button>
+				<button class="btn btn-success" ng-click="postaviAktivnostNaStranici(activity)">editInNewPage</button>
+			</td>
+		</tr>
+	</table>
+</div>
