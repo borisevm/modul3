@@ -1,5 +1,6 @@
 package jwd.wafepa.web.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jwd.wafepa.model.User;
@@ -40,6 +41,7 @@ public class ApiUserController {
 			@RequestParam(defaultValue = "") String name) {
 		
 		Page<User> usersPage;
+		
 		if(name == "") {
 			usersPage = userService.findAll(page);
 		} else {
@@ -52,6 +54,31 @@ public class ApiUserController {
 		}
 
 		List<User> users = usersPage.getContent();
+
+		
+//		List<User> users = new ArrayList<>();
+//		int totalPages = 0;
+//		if(name == "") {
+//			Page<User> usersPage = userService.findAll(page);
+//			users = usersPage.getContent();
+//			totalPages = usersPage.getTotalPages();
+//		} else {
+//			Page<User> usersPage1 = userService.findByFirstName(name, page);
+//			users.addAll(usersPage1.getContent());
+//			Page<User> usersPage2 = userService.findByLastName(name, page);
+//			users.addAll(usersPage2.getContent());
+//			if (usersPage1.getTotalPages()==0 || usersPage2.getTotalPages()==0) {
+//			totalPages = usersPage1.getTotalPages()+usersPage2.getTotalPages();
+//			} else {
+//				totalPages = (usersPage1.getTotalPages()+usersPage2.getTotalPages())/2;
+//			}
+//		}		
+//
+//		if (page > totalPages) {
+//			return new ResponseEntity<List<UserDTO>>(HttpStatus.NOT_FOUND);
+//		}
+		
+		
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("TotalPages", totalPages+"");
 		return new ResponseEntity<>(toDto.convert(users), headers, HttpStatus.OK);

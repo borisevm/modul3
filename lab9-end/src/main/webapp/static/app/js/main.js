@@ -117,8 +117,27 @@ wafepaApp.controller('activitiesCtrl', function($scope, $http, $location) {
 
   $scope.postaviAktivnostNaStranici = function (activity) {
     $location.path('/activity/'+activity.id);   
-
   }
+
+  // funkcija za izmenu podataka o user-u na stranici aktivnosti
+  $scope.izmeniPodatkeUser = function(user) {
+    $scope.prikazUser = true;
+    $scope.activity.user = angular.copy(user);
+    
+    $scope.sacuvaj = function() {
+     if(!$scope.activity.user.id) {
+        $http.post('/api/users', $scope.activity.user).then(ucitajSve);
+     } else {
+       $http.put('/api/users/'+$scope.activity.user.id, $scope.activity.user).then(ucitajSve); 
+     } 
+     $scope.prikazUser = false; 
+   }
+  }
+
+  $scope.zatvori = function() {
+    $scope.prikazUser = false;
+  }
+
 });
 
 wafepaApp.controller('usersCtrl', function($scope, $http, $location) {
@@ -196,8 +215,12 @@ wafepaApp.controller('userCtrl', function($scope, $http, $location, $routeParams
     if(!$scope.user.id) {
       $http.post('/api/users', $scope.user).then( function() {
         $location.path('/users');
-      })
-    }
+      });
+    } else {
+      $http.put('/api/users/'+$scope.user.id, $scope.user).then( function() {
+        $location.path('/users');
+      });
+    }  
   }
 
   $scope.emptyForm = {};

@@ -11,6 +11,14 @@ import jwd.wafepa.model.User;
 public interface UserRepository 
 	extends PagingAndSortingRepository<User, Long> {
 	
-	Page<User> findByNameContains(String name, Pageable page);
+//	@Query("select u from User u where u.first_name = %:name% or u.last_name = %:name%")
+//	Page<User> findByLastNameOrFirstNameContains(String name, Pageable page);
+	
+	Page<User> findByFirstNameContains(String firstName, Pageable page);
+	
+	Page<User> findByLastNameContains(String lastName, Pageable page);
+	
+//	Page<User> findByLastNameOrFirstName(String lastName, String firstName, Pageable page);
 
 }
+

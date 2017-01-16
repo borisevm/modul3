@@ -1,5 +1,7 @@
 package jwd.wafepa.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,10 +37,25 @@ public class JpaUserService implements UserService {
 	public void delete(Long id) {
 		userRepository.delete(id);
 	}
+	
+//	@Override
+//	public Page<User> findByFirstName(String name, int page) {			 
+//		return  userRepository.findByFirstNameContains(name, new PageRequest(page, 5));	
+//	}
+//	
+//	
+//	@Override
+//	public Page<User> findByLastName(String name, int page) {	
+//		return userRepository.findByLastNameContains(name, new PageRequest(page, 5));		
+//	}
 
 	@Override
-	public Page<User> findByName(String name, int page) {		
-		return userRepository.findByNameContains(name, new PageRequest(page, 10));
+	public Page<User> findByName(String name, int page) {			 
+		Page<User> retVal = userRepository.findByFirstNameContains(name, new PageRequest(page, 10));
+		if (!retVal.hasContent()) {
+			retVal = userRepository.findByLastNameContains(name, new PageRequest(page, 10));
+		}		
+		return retVal;
 	}
 
 }
