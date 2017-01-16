@@ -36,4 +36,9 @@ public class JpaUserService implements UserService {
 		userRepository.delete(id);
 	}
 
+	@Override
+	public Page<User> findByName(String name, int page) {		
+		return userRepository.findByNameContains(name, new PageRequest(page, 10));
+	}
+
 }

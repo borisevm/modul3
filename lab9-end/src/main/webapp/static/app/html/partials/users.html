@@ -11,10 +11,14 @@
 	</form>
 	<hr />
 	<form>
-		<label for="filter">last name: </label><input id="filter" class="form-control" type="text" ng-model="filterUser.lastname"><br />		
+		<label for="filter">last name: </label><input id="filter" class="form-control" type="text" ng-model="filterUser.name"><br />		
 		<button class="btn btn-primary" ng-click="filtriraj()">filtriraj</button>
 	</form>
 	<hr />
+	<div class="btn-group pull-right">
+		<button class="btn btn-primary" ng-click="changePage(-1)" ng-disabled="brojacStranice==0">prev</button>
+		<button class="btn btn-primary" ng-click="changePage(1)" ng-disabled="brojacStranice==totalPages-1">next</button>
+	</div>
 	<table class="table table-bordered table-striped">
 		<tr ng-repeat="user in users">
 			<td>{{user.id}}</td>

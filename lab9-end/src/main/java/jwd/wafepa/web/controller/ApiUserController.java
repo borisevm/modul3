@@ -11,6 +11,7 @@ import jwd.wafepa.web.dto.UserRegistrationDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,15 +38,23 @@ public class ApiUserController {
 	ResponseEntity<List<UserDTO>> getUser(
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "") String name) {
-		Page<User> usersPage = userService.findAll(page);
-
-		if (page > usersPage.getTotalPages()) {
+		
+		Page<User> usersPage;
+		if(name == "") {
+			usersPage = userService.findAll(page);
+		} else {
+			usersPage = userService.findByName(name, page);
+		}
+		
+		int totalPages = usersPage.getTotalPages();
+		if (page > totalPages) {
 			return new ResponseEntity<List<UserDTO>>(HttpStatus.NOT_FOUND);
 		}
 
 		List<User> users = usersPage.getContent();
-
-		return new ResponseEntity<>(toDto.convert(users), HttpStatus.OK);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("TotalPages", totalPages+"");
+		return new ResponseEntity<>(toDto.convert(users), headers, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)

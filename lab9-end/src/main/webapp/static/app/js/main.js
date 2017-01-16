@@ -49,7 +49,7 @@ wafepaApp.controller('activitiesCtrl', function($scope, $http, $location) {
   $scope.getAddressAsString = function(user){
     retVal = '';
     for (var i = 0; i < user.addresses.length; i++) {
-      retVal += user.addresses[i].streat + ' ' + user.addresses[i].number + ' ';
+      retVal += user.addresses[i].street + ' ' + user.addresses[i].number + ' ';
     };
     return retVal;
   }
@@ -123,17 +123,42 @@ wafepaApp.controller('activitiesCtrl', function($scope, $http, $location) {
 
 wafepaApp.controller('usersCtrl', function($scope, $http, $location) {
 
+  $scope.brojacStranice = 0;
+
+  $scope.changePage = function(i) {
+    if($scope.brojacStranice >= 0) {
+      $scope.brojacStranice += i;
+    }
+    ucitajSve();
+  };
+
   var ucitajSve = function() {
-    $http.get('/api/users').then( function(resp) {
+    var config = {'params' : {'page' : $scope.brojacStranice}}
+
+    if($scope.filterUser && $scope.filterUser.name) {
+      config.params.name = $scope.filterUser.name;
+    }
+    $http.get('/api/users', config).then( function(resp) {
       $scope.users = resp.data;
+      $scope.totalPages = Number(resp.headers().totalpages); //response promenljive su low case
       $scope.user = {};
     });
   }
 
   ucitajSve();
 
+  $scope.filtriraj = function() {
+    $scope.brojacStranice = 0;
+    ucitajSve();
+  }
+
   $scope.brisanje = function(id) {
-    $http.delete('/api/users/'+id).then(ucitajSve);
+    $http.delete('/api/users/'+id).then( function() {
+      if($scope.brojacStranice >= $scope.totalPages-1) {
+        $scope.brojacStranice --; 
+      }
+      ucitajSve();
+    });
   }
   
   $scope.sacuvaj = function() {
@@ -154,13 +179,31 @@ wafepaApp.controller('usersCtrl', function($scope, $http, $location) {
   }
 
   $scope.emptyForm = {};
-  $scope.reset = function(a) {
+  $scope.reset = function() {
     $scope.user = angular.copy($scope.emptyForm);
   }
 
 });
 
-wafepaApp.controller('userCtrl', function($scope, $http) {
+wafepaApp.controller('userCtrl', function($scope, $http, $location, $routeParams) {
+
+  $http.get('/api/users/'+$routeParams.id).then( function(resp) {
+    $scope.user = resp.data;
+  });
+
+  $scope.sacuvaj = function() {
+
+    if(!$scope.user.id) {
+      $http.post('/api/users', $scope.user).then( function() {
+        $location.path('/users');
+      })
+    }
+  }
+
+  $scope.emptyForm = {};
+  $scope.reset = function() {
+    $scope.user = angular.copy($scope.emptyForm);
+  }
 
 });
 
