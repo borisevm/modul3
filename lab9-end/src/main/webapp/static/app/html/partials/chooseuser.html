@@ -1,0 +1,25 @@
+<div ng-controller="chooseUserCtrl">
+<h1>Users <span class="badge">{{users.length}}</span></h1>	
+	<form>
+		<label for="filter">name: </label><input id="filter" class="form-control" type="text" ng-model="filterUser.name"><br />		
+		<button class="btn btn-primary" ng-click="filtriraj()">filtriraj</button>
+	</form>
+	{{activityForUser}}
+	{{activityForUser.user.id}}
+	<hr />
+	<div class="btn-group pull-right">
+		<button class="btn btn-primary" ng-click="changePage(-1)" ng-disabled="brojacStranice==0">prev</button>
+		<button class="btn btn-primary" ng-click="changePage(1)" ng-disabled="brojacStranice==totalPages-1">next</button>
+	</div>
+	<table class="table table-bordered table-striped">
+		<tr ng-repeat="user in users"> <!-- | filter : filterUser.name -->
+			<td>{{user.id}}</td>
+			<td>{{user.firstname}}</td>
+			<td>{{user.lastname}}</td>
+			<td>{{user.email}}</td>
+			<td>			
+			<button class="btn btn-success" ng-click="postaviUserNaAktivnost(user)">postavi user</button>			
+			</td>
+		</tr>
+	</table>
+</div>

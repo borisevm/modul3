@@ -2,6 +2,7 @@
 <div ng-controller="activitiesCtrl">
 	<form>
 		<label for="name">name:</label><input id="name" class="form-control" type="text" ng-model="activity.name"><br />
+		<label for="name">user id:</label><input id="userId" class="form-control" type="text" ng-model="activity.user.id"><br />
 		<button class="btn btn-primary" ng-click="sacuvaj()">sacuvaj</button>
 	</form>
 	<hr />
@@ -17,8 +18,9 @@
 			<label for="lastname">last name: </label><input id="lastname" class="form-control" type="text" ng-model="activity.user.lastname"><br />	
 			<label for="password">password: </label><input id="password" class="form-control" type="password" ng-model="activity.user.password"><br />
 			<label for="confirmpassword">confirm password: </label><input id="confirmpassword" class="form-control" type="password" ng-model="activity.user.passwordConfirm"><br />	
-			<button class="btn btn-primary" ng-click="sacuvaj()">sacuvaj</button>
-			<button class="btn btn-danger" ng-click="zatvori()">zatvori</button>		
+			<button class="btn btn-success" ng-click="sacuvaj()">sacuvaj</button>
+			<button class="btn btn-danger" ng-click="brisiUserAktivnost()">brisi</button>
+			<button class="btn btn-primary" ng-click="zatvori()">zatvori</button>		
 		</form>
 		<hr />
 	</div>

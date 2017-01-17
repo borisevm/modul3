@@ -15,47 +15,52 @@ import jwd.wafepa.service.UserService;
 @Service
 public class JpaUserService implements UserService {
 	@Autowired
-	private UserRepository userRepository;
+	private UserRepository UserRepository;
 
 	@Override
 	public User findOne(Long id) {
-		return userRepository.findOne(id);
+		return UserRepository.findOne(id);
 	}
 
 	@Override
 	public Page<User> findAll(int page) {
 		
-		return userRepository.findAll(new PageRequest(page, 10));
+		return UserRepository.findAll(new PageRequest(page, 10));
 	}
 
 	@Override
 	public User save(User user) {
-		return userRepository.save(user);
+		return UserRepository.save(user);
 	}
 
 	@Override
 	public void delete(Long id) {
-		userRepository.delete(id);
+		UserRepository.delete(id);
+	}
+	
+	@Override
+	public Page<User> findByName(String name, int page) {	
+		return UserRepository.findByLastNameOrFirstNameContaining(name, name, new PageRequest(page, 10));		
 	}
 	
 //	@Override
 //	public Page<User> findByFirstName(String name, int page) {			 
-//		return  userRepository.findByFirstNameContains(name, new PageRequest(page, 5));	
+//		return  UserRepository.findByFirstNameContains(name, new PageRequest(page, 5));	
 //	}
 //	
 //	
 //	@Override
 //	public Page<User> findByLastName(String name, int page) {	
-//		return userRepository.findByLastNameContains(name, new PageRequest(page, 5));		
+//		return UserRepository.findByLastNameContains(name, new PageRequest(page, 5));		
 //	}
 
-	@Override
-	public Page<User> findByName(String name, int page) {			 
-		Page<User> retVal = userRepository.findByFirstNameContains(name, new PageRequest(page, 10));
-		if (!retVal.hasContent()) {
-			retVal = userRepository.findByLastNameContains(name, new PageRequest(page, 10));
-		}		
-		return retVal;
-	}
+//	@Override
+//	public Page<User> findByName(String name, int page) {			 
+//		Page<User> retVal = UserRepository.findByFirstNameContains(name, new PageRequest(page, 10));
+//		if (!retVal.hasContent()) {
+//			retVal = UserRepository.findByLastNameContains(name, new PageRequest(page, 10));
+//		}		
+//		return retVal;
+//	}
 
 }
