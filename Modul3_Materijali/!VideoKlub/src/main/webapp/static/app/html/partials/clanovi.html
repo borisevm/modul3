@@ -1,0 +1,42 @@
+<h1>Clanovi</h1>
+<div ng-controller="clanoviCtrl">
+	<form>
+		<label for="ime">ime:</label><input id="ime" class="form-control" type="text" ng-model="clan.ime"><br />
+		<label for="prezime">prezime:</label><input id="prezime" class="form-control" type="text" ng-model="clan.prezime"><br />		
+		<br />
+		<label for="adresa">adresa:</label><input id="adresa" class="form-control" type="text" ng-model="clan.adresa"><br />		
+		<br />		
+		<button class="btn btn-primary" ng-disabled="!clan.ime" ng-click="sacuvaj()">sacuvaj</button>
+		<button class="btn btn-primary" ng-disabled="!clan.ime" ng-click="reset()">reset</button>
+	</form>	
+	<hr />
+	<form>
+		<label for="filter">pretraga:</label><input class="form-control" id="filter" type="text" ng-model="filterClan.name"><br />
+		<button class="btn btn-primary" ng-click="filtriraj()">filtriraj</button>
+	</form>
+	<hr />
+	<table class="table table-bordered table-striped">
+		<tr>
+			<th>id</th>
+			<th>ime</th>
+			<th>prezime</th>
+			<th>adresa</th>			
+			<th>akcije</th>
+		</tr>
+		<tr ng-repeat="clan in clanovi">
+			<td>{{ clan.id }}</td>
+			<td>{{ clan.ime }}</td>
+			<td>{{ clan.prezime }}</td>
+			<td>{{ clan.adresa }}</td>					
+			<td>
+				<button class="btn btn-danger" ng-click="brisanje(clan.id)">brisi</button>
+				<button class="btn btn-success" ng-click="izmeni(clan)">izmeni</button>				
+			</td>
+		</tr>
+	</table>
+	<span class="badge">{{brojacStranice+1}}</span>
+	<div class="btn-group pull-right">
+		<button class="btn btn-primary" ng-click="changePage(-1)" ng-disabled="brojacStranice == 0">prev</button>
+		<button class="btn btn-primary" ng-click="changePage(1)" ng-disabled="brojacStranice == totalPages-1">next</button>
+	</div>	
+</div>

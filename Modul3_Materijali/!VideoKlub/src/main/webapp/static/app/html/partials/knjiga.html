@@ -1,0 +1,12 @@
+<h1>Knjiga</h1>
+<div ng-controller="knjigaCtrl">
+	<form>
+		<label for="naslov">naslov:</label><input id="naslov" class="form-control" type="text" ng-model="knjiga.naslov"><br />
+		<label for="godinaIzdanja">godina izdanja:</label><input id="godinaIzdanja" class="form-control" type="text" ng-model="knjiga.godinaIzdanja"><br />
+		<label for="autor">autor:</label><select id="autor" class="form-control" ng-model="knjiga.autor.id">
+			<option ng-repeat="autor in autori" value="{{ autor.id }}" ng-selected="selected(autor.id, knjiga.autor.id)">{{ autor.ime }} {{ autor.prezime }}</option>
+		</select>
+		<br />		
+		<button class="btn btn-primary" ng-disabled="!knjiga.naslov" ng-click="sacuvaj()">sacuvaj</button>
+	</form>
+</div>

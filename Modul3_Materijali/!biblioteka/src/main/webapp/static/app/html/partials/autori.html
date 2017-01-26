@@ -1,0 +1,38 @@
+<h1>Autori</h1>
+<div ng-controller="autoriCtrl">
+	<form>
+		<label for="ime">ime:</label><input id="ime" class="form-control" type="text" ng-model="autor.ime"><br />
+		<label for="prezime">prezime:</label><input id="prezime" class="form-control" type="text" ng-model="autor.prezime"><br />		
+		<br />		
+		<button class="btn btn-primary" ng-disabled="!autor.ime" ng-click="sacuvaj()">sacuvaj</button>
+		<button class="btn btn-primary" ng-disabled="!autor.ime" ng-click="reset()">reset</button>
+	</form>	
+	<hr />
+	<form>
+		<label for="filter">pretraga:</label><input class="form-control" id="filter" type="text" ng-model="filterAutor.name"><br />
+		<button class="btn btn-primary" ng-click="filtriraj()">filtriraj</button>
+	</form>
+	<hr />
+	<table class="table table-bordered table-striped">
+		<tr>
+			<th>id</th>
+			<th>ime</th>
+			<th>prezime</th>			
+			<th>akcije</th>
+		</tr>
+		<tr ng-repeat="autor in autori">
+			<td>{{ autor.id }}</td>
+			<td>{{ autor.ime }}</td>
+			<td>{{ autor.prezime }}</td>					
+			<td>
+				<button class="btn btn-danger" ng-click="brisanje(autor.id)">delete</button>
+				<button class="btn btn-success" ng-click="izmeniAutora(autor)">izmeni autora</button>				
+			</td>
+		</tr>
+	</table>
+	{{brojacStranice}} {{totalPages}}
+	<div class="btn-group pull-right">
+		<button class="btn btn-primary" ng-click="changePage(-1)" ng-disabled="brojacStranice == 0">prev</button>
+		<button class="btn btn-primary" ng-click="changePage(1)" ng-disabled="brojacStranice == totalPages-1">next</button>
+	</div>	
+</div>

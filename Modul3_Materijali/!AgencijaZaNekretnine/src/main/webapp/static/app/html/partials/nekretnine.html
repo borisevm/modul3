@@ -1,0 +1,47 @@
+<h1>Nekretnine</h1>
+<div ng-controller="nekretnineCtrl">
+	<form>
+		<label for="povrsina">povrsina:</label><input id="povrsina" class="form-control" type="text" ng-model="nekretnina.povrsina"><br />
+		<label for="adresa">adresa:</label><input id="adresa" class="form-control" type="text" ng-model="nekretnina.adresa"><br />
+		<label for="cena">cena:</label><input id="cena" class="form-control" type="text" ng-model="nekretnina.cena"><br />
+		<label for="tipNekretnine">tip nekretnine:</label><select id="tipNekretnine" class="form-control" ng-model="nekretnina.tipNekretnine.id">
+			<option ng-repeat="tipNekretnine in tipoviNekretnine" value="{{ tipNekretnine.id }}" ng-selected="selected(tipNekretnine.id, nekretnina.tipNekretnine.id)">{{ tipNekretnine.naziv }}</option>
+		</select>
+		<br />		
+		<button class="btn btn-primary" ng-disabled="!nekretnina.povrsina" ng-click="sacuvaj()">sacuvaj</button>
+		<button class="btn btn-primary" ng-disabled="!nekretnina.povrsina" ng-click="reset()">reset</button>
+	</form>	
+	<hr />
+	<form>
+		<label for="filter">filter:</label><input class="form-control" id="filter" type="text" ng-model="filterNekretnina.adresa"><br />
+		<button class="btn btn-primary" ng-click="filtriraj()">filtriraj</button>
+	</form>
+	<hr />
+	<table class="table table-bordered table-striped">
+		<tr>
+			<th>id</th>
+			<th>povrsina</th>
+			<th>adresa</th>
+			<th>cena</th>
+			<th>tip nekretnine</th>
+			<th>akcije</th>
+		</tr>
+		<tr ng-repeat="nekretnina in nekretnine">
+			<td>{{ nekretnina.id }}</td>
+			<td>{{ nekretnina.povrsina }}</td>
+			<td>{{ nekretnina.adresa }}</td>
+			<td>{{ nekretnina.cena }}</td>
+			<td>{{ nekretnina.tipNekretnine.naziv }}</td>			
+			<td>
+				<button class="btn btn-danger" ng-click="brisanje(nekretnina.id)">delete</button>
+				<button class="btn btn-success" ng-click="izmeniNekretninu(nekretnina)">izmeni nekretninu</button>
+				<button class="btn btn-success" ng-click="izmeniNekretninuNaStrani(nekretnina)">izmeni nekretninu na strani</button>
+			</td>
+		</tr>
+	</table>
+	<span class="badge">{{ brojacStranice+1 }}</span>
+	<div class="btn-group pull-right">
+		<button class="btn btn-primary" ng-click="changePage(-1)" ng-disabled="brojacStranice == 0">prev</button>
+		<button class="btn btn-primary" ng-click="changePage(1)" ng-disabled="brojacStranice == totalPages-1">next </button>		
+	</div>	
+</div>

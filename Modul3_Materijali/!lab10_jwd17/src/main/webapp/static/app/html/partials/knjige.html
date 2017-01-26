@@ -1,0 +1,44 @@
+<h1>Knjige</h1>
+<div ng-controller="knjigeCtrl">
+ 	<form>
+		naslov:<input class="form-control" type="text" ng-model="knjiga.naslov"><br />
+		godina izdanja:<input class="form-control" type="text" ng-model="knjiga.godinaIzdanja"><br />
+		autor: <select ng-model="knjiga.autor.id" class="form-control">
+					<option ng-repeat="autor in autori" value="{{autor.id}}">{{autor.ime}} {{autor.prezime}}</option>
+				</select> <br />
+		<button class="btn btn-primary" ng-click="sacuvaj()">sacuvaj</button>
+	</form>
+<!-- 	
+	<hr />
+	<form>
+		<label for="filter">name:</label><input class="form-control" id="filter" type="text" ng-model="filterActivity.name"><br />
+		<button class="btn btn-primary" ng-click="filtriraj()">filtriraj</button>
+	</form>
+	<hr />
+	<div class="btn-group pull-right">
+		<button ng-disabled="brojacStranice<=0" ng-click="changePage(-1)" class="btn btn-primary">prev</button>
+		<button ng-disabled="brojacStranice>=totalPages-1" ng-click="changePage(1)" class="btn btn-primary">next</button>
+	</div>
+ -->	
+    <table class="table table-bordered table-striped">
+		<tr>
+			<th>id</th>
+			<th>naslov</th>
+			<th>godina</th>
+			<th>autor</th>
+			<th>akcije</th>
+		</tr>
+		<tr ng-repeat="knjiga in knjige">
+			<td>{{knjiga.id}}</td>
+			<td>{{knjiga.title}}</td>
+			<td>{{knjiga.godinaIzdanja}}</td>
+			<td>{{knjiga.autor.ime}} {{knjiga.autor.prezime}}</td>
+
+			<td>			
+				<button class="btn btn-danger" ng-click="brisanje(activity.id)">delete</button>
+				<button class="btn btn-success" ng-click="postaviAktivnost(activity)">edit</button>
+				<button class="btn btn-success" ng-click="postaviAktivnostNaStranici(activity)">editInNewPage</button>
+			</td>
+		</tr>
+	</table>
+</div>

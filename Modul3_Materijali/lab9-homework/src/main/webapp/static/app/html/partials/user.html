@@ -1,0 +1,12 @@
+<h1>User</h1>
+<div ng-controller="userCtrl">
+	<form>
+		<label for="email">e-mail: </label><input id="email" class="form-control" type="text" ng-model="user.email"><br />
+		<label for="firstname">first name: </label><input id="firstname" class="form-control" type="text" ng-model="user.firstname"><br />
+		<label for="lastname">last name: </label><input id="lastname" class="form-control" type="text" ng-model="user.lastname"><br />		
+		<label for="password">password: </label><input id="password" class="form-control" type="password" ng-model="user.password"><br />
+		<label for="confirmpassword">confirm password: </label><input id="confirmpassword" class="form-control" type="password" ng-model="user.passwordConfirm"><br />
+		<button class="btn btn-primary" ng-click="sacuvaj()">sacuvaj</button>
+		<button class="btn btn-primary" ng-click="reset()">reset</button>
+	</form>
+</div>	
