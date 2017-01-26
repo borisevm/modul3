@@ -43,7 +43,7 @@ wafepaApp.controller('activityCtrl',
   }
 });
 
-wafepaApp.controller('activitiesCtrl', function($scope, $http, $location) {
+wafepaApp.controller('activitiesCtrl', function($scope, $http, $location, ForwardDataService) {
 
   //funkcija za dobavljanje elemenata niza za prikaz u angular izrazu na html stranici
   $scope.getAddressAsString = function(user){
@@ -130,12 +130,23 @@ wafepaApp.controller('activitiesCtrl', function($scope, $http, $location) {
      } else {
        $http.put('/api/users/'+$scope.activity.user.id, $scope.activity.user).then(ucitajSve); 
      } 
-     $scope.prikazUser = false; 
+     $scope.prikazUser = false;     
    }
+
+   $scope.brisiUserAktivnost = function() {
+     $http.delete('/users/'+$scope.activity.user.id).then(ucitajSve);
+     $scope.prikazUser = false; 
+  }
+    
   }
 
   $scope.zatvori = function() {
     $scope.prikazUser = false;
+  }
+
+  $scope.postaviNoviUser = function(activity) {    
+    ForwardDataService.setActivity(activity);
+    $location.path('/chooseuser'); 
   }
 
 });
@@ -200,7 +211,7 @@ wafepaApp.controller('usersCtrl', function($scope, $http, $location) {
   $scope.emptyForm = {};
   $scope.reset = function() {
     $scope.user = angular.copy($scope.emptyForm);
-  }
+  }  
 
 });
 
@@ -230,6 +241,75 @@ wafepaApp.controller('userCtrl', function($scope, $http, $location, $routeParams
 
 });
 
+wafepaApp.controller('chooseUserCtrl', function($scope, $http, $location, ForwardDataService) {
+
+  $scope.brojacStranice = 0;
+
+  $scope.changePage = function(i) {
+    if($scope.brojacStranice >= 0) {
+      $scope.brojacStranice += i;
+    }
+    ucitajSve();
+  };
+
+  var ucitajSve = function() {
+    var config = {'params' : {'page' : $scope.brojacStranice}}
+
+    if($scope.filterUser && $scope.filterUser.name) {
+      config.params.name = $scope.filterUser.name;
+    }
+    $http.get('/api/users', config).then( function(resp) {
+      $scope.users = resp.data;
+      $scope.totalPages = Number(resp.headers().totalpages); //response promenljive su low case
+      $scope.user = {};
+    });
+  }
+
+  ucitajSve();
+
+  $scope.filtriraj = function() {
+    $scope.brojacStranice = 0;
+    ucitajSve();
+  }
+  $scope.activityForUser = ForwardDataService.getActivity();
+
+  $scope.postaviUserNaAktivnost = function(user) {
+    var activity = ForwardDataService.getActivity();
+
+    activity.user.id = user.id
+    
+    $http.put('/api/activities/'+activity.id, activity).then( function() {      
+     $location.path('/activities');
+     ucitajSve();
+   });
+  }
+
+});  
+
+wafepaApp.service ('ForwardDataService', function () {
+
+    var activity;
+
+    var UserId;
+
+    this.setActivity = function(a) {
+      activity = a;
+    }
+
+    this.setUserId = function(id) {
+      UserId = id;
+    }
+
+    this.getActivity = function() {
+      return activity;
+    }
+
+    this.getUserId = function() {
+      return UserId;
+    }
+
+});
+
 //Konfigurisanje $routeProvider servisa - prethodno je potrebno dobaviti angular-route.js i dodati ngRoute modul u aplikaciju kao dependency
 //od Angular 1.6 default hash prefiks vise nije '' nego je '!'
 //to znaci da putanja nece biti ...index.html/#/activities 
@@ -255,6 +335,10 @@ wafepaApp.config(function($routeProvider) {
         //http://localhost:8080/static/app/html/index.html/#!/user
         .when('/user/:id', {
           templateUrl : '/static/app/html/partials/user.html'
+        })
+        //http://localhost:8080/static/app/html/index.html/#!/chooseuser
+        .when('/chooseuser', {
+          templateUrl : '/static/app/html/partials/chooseuser.html'
         })
         //sve ostalo radi redirekciju na
         //http://localhost:8080/static/app/html/index.html/#!/
