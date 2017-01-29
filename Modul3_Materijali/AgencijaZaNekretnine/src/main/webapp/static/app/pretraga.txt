@@ -1,0 +1,57 @@
+
+//Repository
+Page<Nekretnina> findByAdresaContainingAndCenaGreaterThanAndCenaLessThan
+		(String adresa, Integer cenaGreater, Integer cenaLess, Pageable page);
+
+
+//JpaService
+@Override
+	public Page<Nekretnina> findByKriterijum(String adresa, Integer cenaOd, Integer cenaDo, int page) {
+		return nekretninaRepository.findByAdresaContainingAndCenaGreaterThanAndCenaLessThan(
+				adresa, cenaOd, cenaDo, new PageRequest(page, 10));
+	}		
+
+
+//Controller
+@RequestMapping(method = RequestMethod.GET)
+	ResponseEntity<List<NekretninaDTO>> getNekretnine(			
+			@RequestParam(value = "adresa", required = false, defaultValue = "") String adresa,
+			@RequestParam(value = "cenaOd", required = false, defaultValue = "0") Integer cenaOd,
+			@RequestParam(value = "cenaDo", required = false, defaultValue = "999999999") Integer cenaDo,
+			@RequestParam(value = "page", required = false, defaultValue = "0") int page) {
+		Page<Nekretnina> nekretnine;
+		if(adresa == "" && cenaOd == 0 && cenaDo == 999999999) {			
+			nekretnine = nekretninaService.findAll(page);						
+		} else  {
+			nekretnine = nekretninaService.findByKriterijum(adresa, cenaOd, cenaDo, page);
+		}
+		int totalPages = nekretnine.getTotalPages();		
+		HttpHeaders headers = new HttpHeaders();		
+		headers.add("TotalPages", totalPages+"");
+		List<Nekretnina> retVal = nekretnine.getContent();
+	return new ResponseEntity<>(toDTO.convert(retVal), headers, HttpStatus.OK);	
+	}
+
+
+//AngularJS
+var ucitajNekretnine = function() {
+		//inicijalno konfigurisanje parametra (za broj strane)
+		var config = {'params': {'page' : $scope.brojacStranice}
+		}
+		
+		if($scope.filterNekretnina&&$scope.filterNekretnina.adresa) {
+			config.params.adresa = $scope.filterNekretnina.adresa;
+		}
+		if($scope.filterNekretnina&&$scope.filterNekretnina.cenaOd) {
+			config.params.cenaOd = $scope.filterNekretnina.cenaOd;
+		}
+		if($scope.filterNekretnina&&$scope.filterNekretnina.cenaDo) {
+			config.params.cenaDo = $scope.filterNekretnina.cenaDo;
+		}		
+
+		$http.get('/api/nekretnine', config).then(function(resp){
+			$scope.nekretnine = resp.data;
+			$scope.totalPages = Number(resp.headers().totalpages);
+			//$scope.nekretnina = {};
+		});
+	}	

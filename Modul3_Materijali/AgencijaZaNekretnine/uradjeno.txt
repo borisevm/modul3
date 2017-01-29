@@ -1,0 +1,13 @@
+1) RESTful api - Uradjeno sve osim "GET /api/tip/<id_tipa>/nekretnine /"
+
+2.1) Unos - Da
+
+2.2) Brisanje - Da
+
+2.3) Izmena - Da
+
+2.4) Izmena u zasebnoj strnici - Da
+
+2.5) Pretraga - Uradjena pretraga po adresi. Za pretragu po svim mogucim kriterijumima bih u kontroleru koristio else if gde bih proveravao ulazne parametre i na osnovu njih pozivao razlicite prilagodjene metode.
+
+2.6) Paginacija - Da

@@ -1,0 +1,48 @@
+<h1>Nekretnine</h1>
+<div ng-controller="nekretnineCtrl">
+	<form>
+		<label for="povrsina">povrsina:</label><input id="povrsina" class="form-control" type="text" ng-model="nekretnina.povrsina"><br />
+		<label for="adresa">adresa:</label><input id="adresa" class="form-control" type="text" ng-model="nekretnina.adresa"><br />
+		<label for="cena">cena:</label><input id="cena" class="form-control" type="text" ng-model="nekretnina.cena"><br />
+		<label for="tipNekretnine">tip nekretnine:</label><select id="tipNekretnine" class="form-control" ng-model="nekretnina.tipNekretnine.id">
+			<option ng-repeat="tipNekretnine in tipoviNekretnine" value="{{ tipNekretnine.id }}" ng-selected="selected(tipNekretnine.id, nekretnina.tipNekretnine.id)">{{ tipNekretnine.naziv }}</option>
+		</select>
+		<br />		
+		<button class="btn btn-primary" ng-disabled="!nekretnina.povrsina" ng-click="sacuvaj()">sacuvaj</button>
+		<button class="btn btn-primary" ng-disabled="!nekretnina.povrsina" ng-click="reset()">reset</button>
+	</form>	
+	<hr />
+	<form>
+		<label for="filterAdresa">Adresa:</label><input class="form-control" id="filterAdresa" type="text" ng-model="filterNekretnina.adresa"><br />
+		<label for="filterCenaOd">Cena od:</label><input class="form-control" id="filterCenaOd" type="text" ng-model="filterNekretnina.cenaOd"><br />
+		<label for="filterCenaDo">Cena do:</label><input class="form-control" id="filterCenaDo" type="text" ng-model="filterNekretnina.cenaDo"><br />
+		<button class="btn btn-primary" ng-click="filtriraj()">filtriraj</button>
+	</form>
+	<hr />
+	<div class="btn-group pull-right">
+		<button class="btn btn-primary" ng-click="changePage(-1)" ng-disabled="brojacStranice == 0">prethodno </button>
+		<button class="btn btn-primary" ng-click="changePage(1)" ng-disabled="brojacStranice == totalPages-1">sledece </button>	
+	</div>	
+	<table class="table table-bordered table-striped">
+		<tr>
+			<th>adresa:</th>			
+			<th>povrsina:</th>			
+			<th>cena:</th>
+			<th>tip:</th>
+			<th>akcija:</th>
+		</tr>
+		<tr ng-repeat="nekretnina in nekretnine">
+			<td>{{ nekretnina.adresa }}</td>			
+			<td>{{ nekretnina.povrsina }} m2</td>			
+			<td>{{ nekretnina.cena }}</td>
+			<td>{{ nekretnina.tipNekretnine.naziv }}</td>			
+			<td>
+				<button class="btn btn-danger" ng-click="brisanje(nekretnina.id)">obrisi</button>
+				<button class="btn btn-warning" ng-click="izmeniNekretninu(nekretnina)">izmeni</button>
+				<button class="btn btn-warning" ng-click="izmeniNekretninuNaStrani(nekretnina)">izmeni na novoj stranici</button>
+			</td>
+		</tr>
+	</table>
+	<span>Vi ste na strani br: </span><span class="badge">{{ brojacStranice+1 }}</span>
+	
+</div>
