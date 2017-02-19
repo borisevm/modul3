@@ -3,11 +3,13 @@ package levi.advertisements.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
 import levi.advertisements.model.User;
 import levi.advertisements.repository.UserRepository;
 import levi.advertisements.service.UserService;
 
+@Service
 public class JpaUserService implements UserService {
 
 	@Autowired
@@ -37,6 +39,7 @@ public class JpaUserService implements UserService {
 		}
 		userRepository.delete(id);
 		return retVal;
-	}
+	}	
+	
 
 }

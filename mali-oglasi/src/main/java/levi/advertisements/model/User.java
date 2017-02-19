@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
+import org.hibernate.validator.constraints.Email;
 
 @Entity
 @Table(name="USERS")
@@ -34,19 +35,20 @@ public class User {
 	private String lastName;
 	
 	@Column(nullable=false)
+	@Email
 	private String email;
 	
 	private String phone;
 	
-	@Type(type="yes_no")
+	@Type(type="true_false")
 	@Column(nullable=false)
-	private boolean admin;
+	private boolean isAdmin;
 	
-	@Type(type="yes_no")
+	@Type(type="true_false")
 	@Column(nullable=false)
-	private boolean authorized;
+	private boolean isApproved;
 	
-	@OneToMany(mappedBy="user",cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="author",cascade=CascadeType.ALL)
 	private List<Advertisement> advertisments;
 
 	public User() {
@@ -119,20 +121,20 @@ public class User {
 		this.phone = phone;
 	}
 
-	public boolean isAdmin() {
-		return admin;
+	public boolean getIsAdmin() {
+		return isAdmin;
 	}
 
-	public void setAdmin(boolean admin) {
-		this.admin = admin;
+	public void setIsAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
 	}
 
-	public boolean isAuthorized() {
-		return authorized;
+	public boolean getIsApproved() {
+		return isApproved;
 	}
 
-	public void setAuthorized(boolean authorized) {
-		this.authorized = authorized;
+	public void setIsApproved(boolean isApproved) {
+		this.isApproved = isApproved;
 	}
 
 	public List<Advertisement> getAdvertisments() {

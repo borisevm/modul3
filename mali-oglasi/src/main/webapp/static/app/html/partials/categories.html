@@ -1,0 +1,32 @@
+<h1>Pregled kategorija</h1>
+<div ng-controller="categoriesCtrl">	
+	
+	<div class="btn-group pull-right">
+		<button class="btn btn-primary" ng-click="changePage(-1)" ng-disabled="pageCounter == 0">prethodno </button>
+		<button class="btn btn-primary" ng-click="changePage(1)" ng-disabled="pageCounter == totalPages-1">sledece </button>	
+	</div>	
+	<table st-table="displayedCollection" st-safe-src="categories" class="table table-bordered table-striped">
+		<thead>
+		<tr>
+			<th st-sort="id">R .br.</th>			
+			<th>Naziv</th>			
+			<th>Opis</th>			
+			<th>Akcija</th>
+		</tr>
+		</thead>
+		<tr ng-repeat="category in displayedCollection">
+			<td>{{ category.id }}</td>			
+			<td>{{ category.name }}</td>			
+			<td>{{ category.description }}</td>					
+			<td>
+				<button class="btn btn-danger" ng-click="delete(category.id)">obrisi</button>
+				<button class="btn btn-warning" ng-click="editCategory(category)">izmeni</button>
+				<button class="btn btn-warning" ng-click="editCategoryOnPage(category)">izmeni na novoj stranici</button>
+			</td>
+		</tr>
+	</table>	
+	<span>Vi ste na strani br: </span><span class="badge">{{ pageCounter+1 }}</span>
+	
+</div>
+
+st-table="displayedCollection" st-safe-src="rowCollection"

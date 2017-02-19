@@ -9,6 +9,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import levi.advertisements.support.JsonDateSerializer;
+
 @Entity
 public class Advertisement {
 	
@@ -20,9 +24,11 @@ public class Advertisement {
 	private String title;
 	
 	@Column(name="date_start", nullable=false)
+//	@JsonSerialize(using=JsonDateSerializer.class)
 	private Date dateStart;
 	
 	@Column(name="date_end", nullable=false)
+//	@JsonSerialize(using=JsonDateSerializer.class)
 	private Date dateEnd;
 	
 	@Column(columnDefinition="TEXT")
@@ -62,6 +68,7 @@ public class Advertisement {
 		this.title = title;
 	}
 
+	//@JsonSerialize(using=JsonDateSerializer.class)
 	public Date getDateStart() {
 		return dateStart;
 	}
@@ -69,7 +76,8 @@ public class Advertisement {
 	public void setDateStart(Date dateStart) {
 		this.dateStart = dateStart;
 	}
-
+	
+	//@JsonSerialize(using=JsonDateSerializer.class)
 	public Date getDateEnd() {
 		return dateEnd;
 	}
@@ -101,8 +109,6 @@ public class Advertisement {
 	public void setAuthor(User author) {
 		this.author = author;
 	}
-	
-	
 	
 
 }

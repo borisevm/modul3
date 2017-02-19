@@ -3,11 +3,13 @@ package levi.advertisements.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import levi.advertisements.model.Category;
 import levi.advertisements.repository.CategoryRepository;
 import levi.advertisements.service.CategoryService;
 
+@Service
 public class JpaCategoryService implements CategoryService {
 
 	@Autowired

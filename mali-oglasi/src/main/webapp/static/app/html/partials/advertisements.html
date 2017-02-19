@@ -1,0 +1,42 @@
+<h1>Pregled malih oglasa</h1>
+<div ng-controller="advertisementsCtrl">	
+	<form>
+		<label for="filterCategory">Kategorija:</label><input class="form-control" id="filterCategory" type="text" ng-model="filterAdvertisement.category"><br />
+		<label for="filterDatumEnd">Datum isteka:</label><input class="form-control" id="filterDatumEnd" type="text" ng-model="filterAdvertisement.datumEnd"><br />
+		<label for="filterKeyword">Ključna reč:</label><input class="form-control" id="filterKeyword" type="text" ng-model="filterAdvertisement.keyword"><br />
+		<button class="btn btn-primary" ng-click="filtriraj()">filtriraj</button>
+	</form>
+	<hr />
+	<div class="btn-group pull-right">
+		<button class="btn btn-primary" ng-click="changePage(-1)" ng-disabled="pageCounter == 0">prethodno </button>
+		<button class="btn btn-primary" ng-click="changePage(1)" ng-disabled="pageCounter == totalPages-1">sledece </button>	
+	</div>	
+	<table st-table="sort" class="table table-bordered table-striped">
+		<thead>
+		<tr>
+			<th st-sort="id">R .br.</th>			
+			<th>Kategorija</th>			
+			<th>Naslov</th>
+			<th>Datum postavljanja</th>
+			<th>Datum isteka</th>
+			<th>Autor</th>
+			<th>Akcija</th>
+		</tr>
+		</thead>
+		<tr ng-repeat="advertisement in advertisements">
+			<td>{{ advertisement.id }}</td>			
+			<td>{{ advertisement.category.name }}</td>			
+			<td>{{ advertisement.title }}</td>
+			<td>{{ advertisement.dateStart }}</td>
+			<td>{{ advertisement.dateEnd }}</td>
+			<td>{{ advertisement.author.userName }}</td>			
+			<td>
+				<button class="btn btn-danger" ng-click="delete(advertisement.id)">obrisi</button>
+				<button class="btn btn-warning" ng-click="editAdvertisement(advertisement)">izmeni</button>
+				<button class="btn btn-warning" ng-click="editAdvertisementOnPage(advertisement)">izmeni na novoj stranici</button>
+			</td>
+		</tr>
+	</table>	
+	<span>Vi ste na strani br: </span><span class="badge">{{ pageCounter+1 }}</span>
+	
+</div>
