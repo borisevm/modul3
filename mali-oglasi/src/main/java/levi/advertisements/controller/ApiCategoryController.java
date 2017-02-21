@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import levi.advertisements.dto.CategoryDTO;
 import levi.advertisements.model.Category;
 import levi.advertisements.service.CategoryService;
+import levi.advertisements.service.impl.JpaUserDetailsService;
 import levi.advertisements.support.CategoryToCategoryDTO;
 
 @RestController
@@ -26,6 +28,9 @@ public class ApiCategoryController {
 	
 	@Autowired
 	private CategoryToCategoryDTO toDto;
+	
+	@Autowired
+	private JpaUserDetailsService userDetailsService; 
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<CategoryDTO>> getCategory() {
@@ -47,6 +52,7 @@ public class ApiCategoryController {
 		return new ResponseEntity<>(toDto.convert(category), HttpStatus.OK);
 	}	
 	
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
 	public ResponseEntity<CategoryDTO> delete(@PathVariable Integer id) {
 		Category deleted = categoryService.delete(id);

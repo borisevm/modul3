@@ -1,9 +1,16 @@
 package levi.advertisements.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.ManyToAny;
 
 @Entity
 public class Category {
@@ -16,6 +23,9 @@ public class Category {
 	private String name;
 	
 	private String description;
+	
+	@OneToMany(mappedBy="category",cascade=CascadeType.ALL)
+	List<Advertisement> advetisementsByCategory = new ArrayList<>();
 
 	public Category() {
 		super();
@@ -50,8 +60,14 @@ public class Category {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	
-	
 
+	public List<Advertisement> getAdvetisementsByCategory() {
+		return advetisementsByCategory;
+	}
+
+	public void setAdvetisementsByCategory(List<Advertisement> advetisementsByCategory) {
+		this.advetisementsByCategory = advetisementsByCategory;
+	}
+	
+	
 }
